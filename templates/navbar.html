@@ -1,0 +1,41 @@
+{% load static %}
+<!-- 네비게이션바 -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+    <a class="navbar-brand" href="{% url 'synopex:index' %}" style="color: blue;"><img src="{% static 'synopex_logo.png' %}" alt="synopex" style="width:100px; vertical-align: middle;"></a>
+    <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" arai-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+        <ul class="navbar-nav">
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'free_board' %}">자유게시판</a></li>
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'general_qa' %}">질문과 답변</a></li>
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'kidney_dialysis' %}">신장투석</a></li>
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'heart_disease' %}">심장질환</a></li>
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'general_health' %}">일반 건강상식</a></li>
+            <li><a class="nav-link" href="{% url 'synopex:board_filtered' 'partners' %}">협력 병원</a></li>
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'common:account_page' %}">
+                    <img src="{% static 'profile.png' %}" alt="profile" style="width:20px; vertical-align: middle;">{{ user.username }}
+                </a>
+            </li>
+            {% endif %}
+            <li><a class="nav-link" href="{% url 'common:settings_base' %}"><img src="{% static 'settings.png' %}" alt="settings" style="width:20px; vertical-align: middle;">설정</a></li>
+            <li><a class="nav-link" href="#"><img src="{% static 'rankings.png' %}" alt="rankings" style="width:20px; vertical-align: middle;">랭킹</a></li>
+            <li><a class="nav-link" href="#"><img src="{% static 'attendance.png' %}" alt="attendance" style="width:20px; vertical-align: middle;">출석체크</a></li>
+            <li><a class="nav-link" href="#"><img src="{% static 'referral.png' %}" alt="referral" style="width:20px; vertical-align: middle;">친구추천</a></li>
+            <li><a class="nav-link" href="#"><img src="{% static 'notifications.png' %}" alt="notifications" style="width:20px; vertical-align: middle;">알림</a></li>
+            <li class="nav-item">
+                {% if user.is_authenticated %}
+                <a class="nav-link" href="{% url 'common:logout' %}">
+                    <img src="{% static 'logout.png' %}" alt="logout" style="width:20px; vertical-align: middle;">로그아웃
+                </a>
+                {% else %}
+                <a class="nav-link" href="{% url 'common:login' %}">
+                    <img src="{% static 'login.png' %}" alt="login" style="width:20px; vertical-align: middle;">로그인
+                </a>
+                {% endif %}
+            </li>
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head_extra %}
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+{% endblock %}
+
+{% block content %}
+<style>
+    #profile_base {
+        background-color: #f8f8f8;  /* Light grey background */
+        padding: 20px;  /* Padding inside the container */
+        border-radius: 10px;  /* Rounded corners */
+        width: 88%;
+        max-width: 888px;
+        margin: 20px auto;  /* Centering the container */
+    }
+
+    .profile_label {
+        font-size: 16px;  /* Font size */
+        color: #333;  /* Text color */
+        font-weight: bold;  /* Bold text */
+        display: block;  /* Block-level element */
+        margin-bottom: 5px;  /* Space below the label */
+    }
+
+    .profile_info {
+        font-size: 14px;  /* Font size */
+        color: #555;  /* Text color */
+        background-color: #fff;  /* White background */
+        padding: 10px;  /* Padding inside the paragraph */
+        border-radius: 5px;  /* Slightly rounded corners */
+        margin-bottom: 20px;  /* Space below the paragraph */
+    }
+
+    .profile_input {
+        width: 100%; /* Takes the full width of its container */
+        padding: 10px; /* Adds some padding inside the input */
+        font-size: 16px; /* Adjusts the font size */
+        margin-bottom: 20px; /* Adds some space below the input */
+        border-radius: 5px; /* Slightly rounded corners */
+        border: 1px solid #ccc; /* Adds a light border */
+    }
+
+    .profile_button {
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        padding: 12px 20px; /* Padding */
+        border: none; /* No border */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+        width: 100%; /* Takes the full width of its container */
+    }
+
+    .profile_button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    #messages {
+        width: 88%;
+        max-width: 888px;
+        margin: 20px auto 0;
+        border-radius: 5px;
+    }
+
+    #messages p {
+        padding: 15px;
+        margin: 0;
+        border-radius: 5px;
+        color: white;
+        font-size: 16px;
+    }
+
+    #messages p.info {
+        background-color: #4CAF50; /* Green background for info */
+    }
+
+    #messages p.error {
+        background-color: #f44336; /* Red background for errors */
+    }
+
+    #messages p.warning {
+        background-color: #ff9800; /* Orange background for warnings */
+    }
+
+    #messages p.success {
+        background-color: #4CAF50; /* Green background for success */
+    }
+
+    #profile_base h3 {
+        margin-bottom: 40px;  /* Adjust as per your requirement */
+    }
+
+    .social_icon {
+        display: inline-block; /* Display icons inline */
+        margin: 0 10px; /* Add some space around each icon */
+        vertical-align: middle; /* Align icons vertically in the middle */
+    }
+
+    .social_icon img {
+        width: 24px; /* Size of the icons */
+        height: auto; /* Maintain aspect ratio */
+    }
+
+    /* Style for the container of the icons */
+    #social_links {
+        margin-top: 20px; /* Space above the icons */
+        text-align: center; /* Center align the icons */
+    }
+
+    /* Additional styles for navigation and content sections */
+    .nav_button {
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        padding: 10px 15px; /* Padding */
+        margin: 5px; /* Margin */
+        border: none; /* No border */
+        border-radius: 5px; /* Rounded corners */
+        cursor: pointer; /* Pointer cursor on hover */
+    }
+
+    .nav_button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    #navigation {
+        text-align: center; /* Center the navigation buttons */
+        margin-bottom: 20px; /* Space below the navigation bar */
+    }
+
+    .content_section {
+        display: none; /* Initially hide all sections */
+    }
+
+    #top_nav {
+        background-color: #333; /* Dark background for the nav bar */
+        overflow: hidden; /* Ensures the content fits in the navbar */
+        position: fixed; /* Fixed position */
+        top: 0; /* At the top of the page */
+        width: 100%; /* Full width */
+        z-index: 1000; /* Ensures nav bar stays on top */
+    }
+
+    .nav_link {
+        float: left; /* Align the buttons to the left */
+        color: white; /* White text */
+        text-align: center; /* Center text inside buttons */
+        padding: 14px 16px; /* Padding inside the buttons */
+        text-decoration: none; /* No underline on the text */
+        font-size: 17px; /* Font size */
+    }
+
+    .nav_link:hover {
+        background-color: #ddd; /* Light grey background on hover */
+        color: black; /* Black text on hover */
+    }
+
+    .nav_link.active {
+        background-color: #4CAF50; /* Green background for active link */
+        color: white; /* White text for active link */
+    }
+
+    /* Styles for the user profile navigation bar */
+    #user_profile_nav {
+        text-align: center; /* Center the navigation links */
+        margin-bottom: 20px; /* Space below the navigation bar */
+    }
+
+    .user_nav_link {
+        display: inline-block; /* Display links inline */
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        padding: 10px 20px; /* Padding */
+        margin: 10px 5px; /* Margin around the links */
+        border-radius: 5px; /* Rounded corners */
+        text-decoration: none; /* Remove underline from links */
+    }
+
+    .user_nav_link:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+
+    /* Centering the profile image and keeping text aligned to the left */
+    .profile-image-container {
+        display: flex;
+        justify-content: center; /* Center the image horizontally */
+        margin-bottom: 20px; /* Space below the image */
+    }
+
+    .profile-details {
+        text-align: left; /* Aligns text to the left */
+        margin: 0 auto; /* Centers the container */
+        display: block; /* Treats the container as a block */
+        max-width: 888px; /* Maximum width, matching #profile_base */
+    }
+
+    /* Adjusting social icons for a cleaner, smaller appearance */
+    .social_icon img {
+        width: 20px; /* Smaller size */
+        height: 20px; /* Maintain aspect ratio */
+        margin: 0 5px; /* Less space around each icon */
+    }
+
+    /* Centering social links container while keeping icons aligned to the start */
+    #social_links {
+        display: flex;
+        justify-content: center; /* Center the container */
+        align-items: start; /* Align items to the start, affecting vertical alignment */
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div id="user_profile_nav" class="d-flex justify-content-center mb-4">
+                <a href="#" class="user_nav_link" onclick="window.location.reload();">유저 프로필</a>
+                <a href="{% url 'common:user_questions' user.id %}" class="user_nav_link">유저 포스트</a>
+                <a href="{% url 'common:user_answers' user.id %}" class="user_nav_link">유저 답글</a>
+                <a href="{% url 'common:user_comments' user.id %}" class="user_nav_link">유저 댓글</a>
+            </div>
+        <div id="profile_base">
+            <h3>{{ user.username }}의 계정</h3>
+            <p>프로필 이미지</p>
+            {% if user.profile.image %}
+                <img src="{{ user.profile.image.url }}" style="width: 300px; height: 300px; object-fit: cover; border-radius: 50%; margin-bottom: 20px;">
+            {% else %}
+                <p> 프로필 이미지가 없습니다. </p>
+            {% endif %}
+
+            <label for="email" class="profile_label">이메일</label>
+            <p id="email" class="profile_info mb-4">{{ user.email }}</p>
+
+            <label for="intro" class="profile_label">한줄소개</label>
+            <p id="intro" class="profile_info mb-4">{{ user.profile.intro }}</p>
+
+            <div id="social_links" style="text-align: left;">
+                {% if profile.instagram_url %}
+                    <a href="{{ profile.instagram_url }}" target="_blank" class="social_icon">
+                        <img src="{% static 'instagram.png' %}" alt="Instagram">
+                    </a>
+                {% endif %}
+                {% if profile.twitter_url %}
+                    <a href="{{ profile.twitter_url }}" target="_blank" class="social_icon">
+                        <img src="{% static 'twitter.png' %}" alt="Twitter">
+                    </a>
+                {% endif %}
+                {% if profile.youtube_url %}
+                    <a href="{{ profile.youtube_url }}" target="_blank" class="social_icon">
+                        <img src="{% static 'youtube.png' %}" alt="YouTube">
+                    </a>
+                {% endif %}
+                {% if profile.personal_url %}
+                    <a href="{{ profile.personal_url }}" target="_blank" class="social_icon">
+                        <img src="{% static 'website.png' %}" alt="Website">
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

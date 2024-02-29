@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h5 class="my-3 border-bottom pb-2">게시글 등록</h5>
+    <form method="post" class="post-form my-3">
+        {% csrf_token %}
+        <!-- Error Display Start -->
+        {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for field in form %}
+                {% if field.errors %}
+                <strong>{{ field.label }}</strong>
+                {{ field.errors }}
+                {% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
+        <!-- Error Display End -->
+        <div class="form-group">
+            <label for="subject">제목</label>
+            <input type="text" class="form-control" name="subject" id="subject" value="{{ form.subject.value|default_if_none:'' }}">
+        </div>
+        <div class="form-group">
+            <label for="content" class="d-block">내용</label> <!-- Added class="d-block" to ensure label is formatted correctly -->
+            <div id="editor" style="height: 300px;">{{ form.content.value|default_if_none:''|safe }}</div> <!-- Placeholder for Quill editor -->
+            <textarea class="form-control" name="content" id="content" rows="10" style="display: none;">
+                {{ form.content.value|default_if_none:'' }}
+            </textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">저장하기</button>
+    </form>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var quill = new Quill('#editor', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          ['bold', 'italic', 'underline', 'strike'],
+          ['blockquote', 'code-block'],
+          [{ 'header': 1 }, { 'header': 2 }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'script': 'sub'}, { 'script': 'super' }],
+          [{ 'indent': '-1'}, { 'indent': '+1' }],
+          [{ 'direction': 'rtl' }],
+          [{ 'size': ['small', false, 'large', 'huge'] }],
+          [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+          [{ 'color': [] }, { 'background': [] }],
+          [{ 'font': [] }],
+          [{ 'align': [] }],
+          ['clean'],
+          ['link', 'image', 'video'],
+          ['formula'],
+        ],
+        formula: true // Enable formula mode here
+      }
+    });
+
+    // When the form is submitted, populate the textarea with the content from the editor
+    document.querySelector('form').onsubmit = function(e) {
+      var content = document.querySelector('textarea[name="content"]');
+      if (content) {
+        content.value = quill.root.innerHTML; // Ensure the innerHTML of the editor is assigned to the textarea
+      }
+    };
+  });
+</script>
+{% endblock %}
+
